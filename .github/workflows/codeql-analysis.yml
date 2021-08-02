@@ -12,6 +12,9 @@ jobs:
     name: Analyze
     runs-on: windows-latest
     steps:
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1.0.2
+
       - name: Checkout repository
         uses: actions/checkout@v2
 
@@ -19,34 +22,21 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           queries: security-and-quality
-          languages: c
+          languages: cpp
 
-      - name: Perform CodeQL Autobuild
-        uses: github/codeql-action/autobuild@v1
+      # - name: Perform CodeQL Autobuild
+      #   uses: github/codeql-action/autobuild@v1
 
-      # - name: Build solution
-      #   shell: pwsh
-      #   run: |
-      #     $pathToSolution = ""
-      #     $buildConfiguration = "Release"
-      #     $useSharedCompilation = "false"
-      #     $testProjects = "" # separate paths with comma as in: "test1", "test2"
+      - name: Build solution
+        shell: pwsh
+        run: |
+          $pathToSolution = "mimikatz.sln"
+          $buildConfiguration = "Release"
+          $useSharedCompilation = "false"
 
-      #     dotnet nuget locals all --clear
-
-      #     # remove one or more test projects, 
-      #     # so that CodeQL only analyzes the source code
-      #     dotnet sln $pathToSolution remove $testProjects
-
-      #     dotnet clean $pathToSolution `
-      #     --configuration $buildConfiguration
-
-      #     dotnet restore $pathToSolution
-
-      #     dotnet build $pathToSolution `
-      #     --configuration $buildConfiguration `
-      #     --no-incremental `
-      #     -property:UseSharedCompilation=$useSharedCompilation
+          msbuild $pathToSolution /m `
+          -property:Configuration=$buildConfiguration `
+          -property:UseSharedCompilation=$useSharedCompilation
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
