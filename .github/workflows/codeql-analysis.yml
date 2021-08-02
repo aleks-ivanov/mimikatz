@@ -19,7 +19,7 @@ jobs:
         uses: github/codeql-action/init@v1
         with:
           queries: security-and-quality
-          languages: cpp
+          languages: c
 
       - name: Perform CodeQL Autobuild
         uses: github/codeql-action/autobuild@v1
