@@ -37,7 +37,8 @@ jobs:
           msbuild $pathToSolution /m `
           -property:Configuration=$buildConfiguration `
           -property:Platform=x64 `
-          -property:UseSharedCompilation=$useSharedCompilation
+          -property:UseSharedCompilation=$useSharedCompilation `
+          -property:VisualStudioVersion=12.0
 
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@v1
