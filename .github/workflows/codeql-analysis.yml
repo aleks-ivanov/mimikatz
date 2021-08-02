@@ -36,6 +36,7 @@ jobs:
 
           msbuild $pathToSolution /m `
           -property:Configuration=$buildConfiguration `
+          -property:Platform=x64 `
           -property:UseSharedCompilation=$useSharedCompilation
 
       - name: Perform CodeQL Analysis
